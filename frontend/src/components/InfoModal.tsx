@@ -21,11 +21,15 @@ export default function InfoModal() {
         onClick={(e) => e.stopPropagation()}
       >
         <div className="p-6 flex items-start gap-4">
-          <img 
+          {/* Imagen comentada temporalmente - no viene de la API */}
+          {/* <img 
             src={item.posterUrl} 
             alt={item.title} 
             className="w-24 aspect-[2/3] object-cover rounded-md flex-shrink-0" 
-          />
+          /> */}
+          <div className="w-24 aspect-[2/3] bg-surface-2 rounded-md flex items-center justify-center flex-shrink-0">
+            <span className="text-text-dim text-xs">Sin imagen</span>
+          </div>
           <div className="flex-1 min-w-0">
             <h3 className="font-semibold text-lg text-text mb-2">{item.title}</h3>
             <div className="flex items-center gap-2 text-sm text-text-dim mb-3 flex-wrap">
