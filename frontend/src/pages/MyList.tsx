@@ -7,8 +7,8 @@ export default function MyList() {
   const items = ids.map((id) => entities[id])
 
   return (
-    <div className="min-h-screen bg-bg">
-      <div className="max-w-container mx-auto px-4 py-6 md:px-6">
+    <div className="min-h-screen-dynamic bg-bg pb-[120px]">
+      <div className="max-w-container mx-auto px-4 py-8 md:px-6">
         <div className="mb-8">
           <h1 className="text-2xl md:text-3xl font-bold text-text mb-2">Mi Lista</h1>
           <p className="text-text-dim">Tu colección personal de contenido</p>
@@ -24,7 +24,7 @@ export default function MyList() {
             </p>
           </div>
         ) : (
-          <div className="space-y-6">
+          <div className="grid gap-6 grid-cols-1 lg:grid-cols-2">
             {items.map((item, index) => (
               <div 
                 key={item.id} 

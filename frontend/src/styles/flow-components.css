@@ -1,0 +1,295 @@
+/* Flow Specific Component Styles */
+
+/* Chat message styles */
+.message-user {
+  background: linear-gradient(135deg, var(--flow-primary) 0%, var(--flow-primary-dark) 100%);
+  color: var(--bg-base);
+  margin-left: auto;
+  max-width: 80%;
+  padding: 12px 16px;
+  border-radius: 18px 18px 4px 18px;
+  box-shadow: 0 2px 8px rgba(33, 219, 170, 0.2);
+  font-weight: 500;
+}
+
+.message-assistant {
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  margin-right: auto;
+  max-width: 80%;
+  padding: 12px 16px;
+  border-radius: 18px 18px 18px 4px;
+  border: 1px solid var(--border-color);
+}
+
+.message-system {
+  background: var(--bg-surface-2);
+  color: var(--text-dim);
+  text-align: center;
+  padding: 8px 16px;
+  border-radius: 16px;
+  font-size: 0.875rem;
+  margin: 0 auto;
+  max-width: fit-content;
+}
+
+/* Recommendation card styles */
+.recommendation-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.recommendation-card:hover {
+  border-color: var(--brand-border);
+  box-shadow: 0 8px 32px rgba(33, 219, 170, 0.15);
+  transform: translateY(-2px);
+}
+
+.recommendation-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.recommendation-card-content {
+  padding: 16px;
+}
+
+.recommendation-card-title {
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.recommendation-card-description {
+  color: var(--text-dim);
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+/* Loading skeleton */
+.loading-skeleton {
+  background: linear-gradient(90deg, var(--bg-surface) 0%, var(--bg-surface-2) 50%, var(--bg-surface) 100%);
+  background-size: 200% 100%;
+  animation: loading 1.5s ease-in-out infinite;
+}
+
+@keyframes loading {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Composer styles */
+.composer {
+  background: linear-gradient(135deg, 
+    rgba(26, 27, 31, 0.95) 0%, 
+    rgba(17, 20, 21, 0.95) 100%);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 16px;
+  margin: 16px;
+  position: sticky;
+  bottom: 16px;
+}
+
+.composer-input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text-primary);
+  font-size: 1rem;
+  width: 100%;
+  resize: none;
+}
+
+.composer-input::placeholder {
+  color: var(--text-dim);
+}
+
+/* Content grid */
+.content-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+@media (max-width: 768px) {
+  .content-grid {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 16px;
+    padding: 16px;
+  }
+}
+
+/* Flow Modal Styles */
+.modal-flow {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-light);
+  border-radius: 20px;
+  box-shadow: 0 16px 48px rgba(0,0,0,.45);
+}
+
+/* Flow Sheet Styles */
+.sheet-flow {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+}
+
+/* Flow Button Variants */
+.btn-flow-icon {
+  @apply btn-flow p-3;
+  min-width: auto;
+}
+
+.btn-flow-sm {
+  @apply btn-flow px-4 py-2 text-xs;
+}
+
+.btn-flow-lg {
+  @apply btn-flow px-8 py-4 text-base;
+}
+
+/* Flow Input Variants */
+.input-flow-sm {
+  @apply input-flow px-3 py-2 text-xs;
+}
+
+.input-flow-lg {
+  @apply input-flow px-6 py-4 text-base;
+}
+
+/* Flow Card Variants */
+.card-flow-sm {
+  @apply card-flow p-4;
+}
+
+.card-flow-lg {
+  @apply card-flow p-8;
+}
+
+.card-flow-interactive {
+  @apply card-flow cursor-pointer;
+}
+
+.card-flow-interactive:hover {
+  border-color: var(--flow-primary);
+  box-shadow: 0 8px 32px rgba(33, 219, 170, 0.2);
+}
+
+/* Flow Badge Styles */
+.badge-flow {
+  @apply inline-flex items-center px-2 py-1 rounded-md text-xs font-medium;
+  background: var(--brand-light);
+  color: var(--flow-primary);
+  border: 1px solid var(--brand-border);
+}
+
+.badge-flow-success {
+  background: rgba(34, 197, 94, 0.1);
+  color: #22C55E;
+  border-color: rgba(34, 197, 94, 0.2);
+}
+
+.badge-flow-warning {
+  background: rgba(245, 196, 81, 0.1);
+  color: #F5C451;
+  border-color: rgba(245, 196, 81, 0.2);
+}
+
+.badge-flow-error {
+  background: rgba(239, 68, 68, 0.1);
+  color: #EF4444;
+  border-color: rgba(239, 68, 68, 0.2);
+}
+
+/* Flow Progress Bar */
+.progress-flow {
+  width: 100%;
+  height: 8px;
+  background: var(--bg-surface-2);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-flow-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--flow-primary) 0%, var(--flow-primary-dark) 100%);
+  transition: width 0.3s ease;
+}
+
+/* Flow Divider */
+.divider-flow {
+  height: 1px;
+  background: var(--border-color);
+  margin: 24px 0;
+}
+
+.divider-flow-vertical {
+  width: 1px;
+  background: var(--border-color);
+  margin: 0 24px;
+}
+
+/* Flow Tooltip */
+.tooltip-flow {
+  background: var(--bg-surface-2);
+  color: var(--text-primary);
+  border: 1px solid var(--border-light);
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 0.75rem;
+  box-shadow: 0 4px 16px rgba(0,0,0,.25);
+}
+
+/* Flow Avatar */
+.avatar-flow {
+  @apply inline-flex items-center justify-center rounded-full bg-bg-surface-2 text-text-dim;
+  border: 2px solid var(--border-color);
+}
+
+.avatar-flow-sm {
+  @apply avatar-flow w-8 h-8 text-xs;
+}
+
+.avatar-flow-md {
+  @apply avatar-flow w-10 h-10 text-sm;
+}
+
+.avatar-flow-lg {
+  @apply avatar-flow w-12 h-12 text-base;
+}
+
+/* Flow Status Indicators */
+.status-flow {
+  @apply inline-flex items-center gap-2 text-sm;
+}
+
+.status-flow-online {
+  color: #22C55E;
+}
+
+.status-flow-offline {
+  color: var(--text-muted);
+}
+
+.status-flow-busy {
+  color: #F5C451;
+}
+
+.status-flow-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: currentColor;
+}
