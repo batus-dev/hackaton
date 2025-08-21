@@ -21,3 +21,15 @@ export type Content =
       posterUrl: string
       rating?: number
     }
+
+export type ContentItem = {
+  id: string;
+  title: string;
+  year: number;
+  seasons?: number;
+  genres: string[];
+  rating?: string;
+  synopsis: string;
+  posterUrl: string;
+  backdropUrl?: string;
+}

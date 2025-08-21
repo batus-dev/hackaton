@@ -1,24 +1,35 @@
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import { setEmotion } from '@/features/chat/chatSlice'
 
-const EMOTIONS = ['alegría', 'nostalgia', 'adrenalina', 'relax', 'misterio']
+const EMOTION_PILLS = [
+  '😄 Tengo ganas de reirme un rato',
+  '🤯 Necesito algo emocionante para el fin de semana',
+  '🥺 Estoy para un buen drama',
+  '🍿 Quiero una miniserie atrapante para maratonear'
+]
 
 export default function EmotionChips() {
   const dispatch = useAppDispatch()
   const selected = useAppSelector((s) => s.chat.selectedEmotion)
+  
   return (
-    <div className="flex flex-wrap gap-2">
-      {EMOTIONS.map((e) => (
-        <button
-          key={e}
-          onClick={() => dispatch(setEmotion(e))}
-          className={`px-3 py-1 rounded-full text-sm border ${
-            selected === e ? 'bg-blue-600 border-blue-500' : 'border-white/20 hover:bg-white/5'
-          }`}
-        >
-          {e}
-        </button>
-      ))}
+    <div className="flex gap-3 overflow-x-auto pb-2 snap-x snap-mandatory scrollbar-hide">
+      {EMOTION_PILLS.map((pill, index) => {
+        return (
+          <button
+            key={index}
+            onClick={() => dispatch(setEmotion(pill))}
+            className={`flex-shrink-0 px-4 py-3 rounded-full text-sm border transition-all duration-200 snap-start min-w-max ${
+              selected === pill 
+                ? 'bg-surface-2 border-brand text-brand shadow-1' 
+                : 'bg-surface-2 border-border text-text-dim hover:bg-surface hover:border-text-dim hover:shadow-1 focus:outline-none focus:ring-2 focus:ring-brand'
+            }`}
+            aria-label={`Seleccionar emoción: ${pill}`}
+          >
+            {pill}
+          </button>
+        )
+      })}
     </div>
   )
 }
