@@ -8,19 +8,46 @@ export default function InfoModal() {
 
   if (!id || !item) return null
 
+  const meta = item.type === 'movie' ? `${item.durationMinutes} min` : `${item.seasons} temporadas`
+  const year = new Date().getFullYear() - Math.floor(Math.random() * 10) // Mock year
+
   return (
-    <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-      <div className="bg-zinc-900 border border-white/10 rounded-lg max-w-lg w-full overflow-hidden">
-        <div className="p-4 flex items-start gap-4">
-          <img src={item.posterUrl} alt={item.title} className="w-24 h-36 object-cover rounded" />
-          <div className="flex-1">
-            <h3 className="font-semibold text-lg">{item.title}</h3>
-            <p className="text-xs text-gray-400 mt-1">{item.genres.join(', ')} • {item.parentalRating}</p>
-            <p className="text-sm text-gray-300 mt-2">{item.description}</p>
+    <div 
+      className="fixed inset-0 bg-bg/80 backdrop-blur-md flex items-center justify-center p-4 z-50"
+      onClick={() => dispatch(closeModal())}
+    >
+      <div 
+        className="bg-surface border border-border rounded-lg max-w-lg w-full overflow-hidden shadow-2 animate-fade-in"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="p-6 flex items-start gap-4">
+          <img 
+            src={item.posterUrl} 
+            alt={item.title} 
+            className="w-24 aspect-[2/3] object-cover rounded-md flex-shrink-0" 
+          />
+          <div className="flex-1 min-w-0">
+            <h3 className="font-semibold text-lg text-text mb-2">{item.title}</h3>
+            <div className="flex items-center gap-2 text-sm text-text-dim mb-3 flex-wrap">
+              <span>{meta}</span>
+              <span>•</span>
+              <span>{year}</span>
+              <span>•</span>
+              <span>{item.genres.join(', ')}</span>
+              <span className="bg-surface-2 text-warning px-2 py-0.5 rounded text-xs font-medium">
+                {item.parentalRating}
+              </span>
+            </div>
+            <p className="text-sm text-text-dim leading-relaxed">{item.description}</p>
           </div>
         </div>
-        <div className="p-4 flex justify-end gap-2 border-t border-white/10">
-          <button onClick={() => dispatch(closeModal())} className="px-3 py-1 rounded bg-white/10 hover:bg-white/20 text-sm">Cerrar</button>
+        <div className="px-6 pb-6 flex justify-end gap-3 border-t border-border pt-4">
+          <button 
+            onClick={() => dispatch(closeModal())} 
+            className="px-6 py-2 bg-surface-2 hover:bg-border text-text rounded-lg transition-all duration-150 min-h-[44px]"
+          >
+            Cerrar
+          </button>
         </div>
       </div>
     </div>
