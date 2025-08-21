@@ -130,7 +130,7 @@ export function ApiTestComponent() {
                   className="w-full h-64 object-cover rounded-lg mb-4"
                   onError={(e) => {
                     const target = e.target as HTMLImageElement;
-                    target.src = `https://via.placeholder.com/400x600/1a1a1a/ffffff?text=${encodeURIComponent(item.title)}`;
+                    target.src = '/flow-logo.svg';
                   }}
                 />
                 

@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback, useMemo } from "react";
 import RecommendationCard from '@/components/RecommendationCard'
 import LoadingSkeleton from '@/components/LoadingSkeleton'
 import { Header } from '@/components/Header'
@@ -59,7 +59,7 @@ export default function Chat() {
     scrollToBottom();
   }, [messages]);
 
-  const handlePillClick = (pillText: string) => {
+  const handlePillClick = useCallback((pillText: string) => {
     setInputValue(pillText);
     setTimeout(() => {
       const textarea = composerRef.current?.querySelector('textarea');
@@ -68,7 +68,25 @@ export default function Chat() {
         textarea.setSelectionRange(pillText.length, pillText.length);
       }
     }, 0);
-  };
+  }, []);
+
+  // Memoizar las funciones de click para cada pill
+  const pillClickHandlers = useCallback(() => {
+    return MOOD_PILLS.reduce((handlers, pill) => {
+      handlers[pill.text] = () => handlePillClick(pill.text);
+      return handlers;
+    }, {} as Record<string, () => void>);
+  }, [handlePillClick]);
+
+  const memoizedHandlers = pillClickHandlers();
+
+  // Memoizar el estado de selección de pills
+  const pillSelectionState = useMemo(() => {
+    return MOOD_PILLS.reduce((state, pill) => {
+      state[pill.text] = selectedPills.includes(pill.text);
+      return state;
+    }, {} as Record<string, boolean>);
+  }, [selectedPills]);
 
   const handleInputChange = (value: string) => {
     setInputValue(value);
@@ -140,37 +158,24 @@ export default function Chat() {
 
   const ConversationPane = () => (
     <div className="flex h-full flex-col">
-      {/* Header Content */}
-      <div className="flex-1 overflow-y-auto p-6 lg:p-8">
+      {/* Header Content and Messages - Scrollable */}
+      <div className="flex-1 overflow-y-auto p-6 lg:p-8 pb-4">
         <div className="mx-auto max-w-2xl">
-          {/* Main heading */}
-          <div className="mb-8 text-center">
-            <h1 className="mb-4 text-3xl lg:text-4xl font-bold text-white">
-              Conectá con lo que sentís y disfrutá sin buscar
-            </h1>
-            <p className="text-lg text-[#B3B8C2]">
-              ¿Tenés poco tiempo o pocas ganas de decidir? Contanos para qué estás hoy y dejate sorprender
-            </p>
-          </div>
-
-          {/* Pills */}
-          <div className="mb-8">
-            <div className="flex flex-wrap gap-3">
-              {MOOD_PILLS.map((pill) => (
-                <Pill
-                  key={pill.text}
-                  emoji={pill.emoji}
-                  text={pill.text}
-                  selected={selectedPills.includes(pill.text)}
-                  onClick={() => handlePillClick(pill.text)}
-                />
-              ))}
+          {/* Main heading - Solo se muestra si no hay mensajes */}
+          {messages.length === 0 && (
+            <div className="mb-8 text-center">
+              <h1 className="mb-4 text-3xl lg:text-4xl font-bold text-white">
+                Conectá con lo que sentís y disfrutá sin buscar
+              </h1>
+              <p className="text-lg text-[#B3B8C2]">
+                ¿Tenés poco tiempo o pocas ganas de decidir? Contanos para qué estás hoy y dejate sorprender
+              </p>
             </div>
-          </div>
+          )}
 
           {/* Chat Messages */}
           {messages.length > 0 && (
-            <div className="mb-6">
+            <div className="mb-4">
               <div className="space-y-4 rounded-lg bg-[#15171B] p-4">
                 {messages.map((message) => (
                   <MessageBubble
@@ -194,6 +199,26 @@ export default function Chat() {
               </div>
             </div>
           )}
+        </div>
+      </div>
+
+      {/* Pills - Fijas sobre el input */}
+      <div className="border-t border-[#2A2E35] bg-[#0E0F12] px-4 py-3">
+        <div className="mx-auto max-w-2xl">
+          <div className="mb-3">
+            <div className="flex flex-wrap gap-2 justify-center">
+              {MOOD_PILLS.map((pill) => (
+                <Pill
+                  key={pill.text}
+                  emoji={pill.emoji}
+                  text={pill.text}
+                  selected={pillSelectionState[pill.text]}
+                  onClick={memoizedHandlers[pill.text]}
+                  className={messages.length > 0 ? "text-xs px-3 py-1.5" : ""}
+                />
+              ))}
+            </div>
+          </div>
         </div>
       </div>
 
@@ -252,10 +277,10 @@ export default function Chat() {
   );
 
   return (
-    <div className="dark flex h-screen flex-col bg-[#0E0F12] pb-[160px]">
+    <div className="dark flex h-screen flex-col bg-[#0E0F12]">
       <Header showResults={status === 'succeeded' && recs.length > 0} onStartOver={handleStartOver} />
       
-      <div className="flex flex-1">
+      <div className="flex flex-1 overflow-hidden">
         {/* Conversation Pane - Full width on mobile when no results, left half when results exist */}
         <div className={cn(
           "flex flex-col transition-all duration-300 overflow-hidden",
@@ -282,7 +307,7 @@ export default function Chat() {
               variant="outline" 
               size="sm"
               className={cn(
-                "fixed bottom-6 right-6 z-50 bg-[#5B8CFF] text-white border-[#5B8CFF] hover:bg-[#4A7AE7] md:hidden",
+                "fixed bottom-24 right-6 z-50 bg-[#5B8CFF] text-white border-[#5B8CFF] hover:bg-[#4A7AE7] md:hidden",
                 !(status === 'succeeded' && recs.length > 0) && "hidden"
               )}
             >

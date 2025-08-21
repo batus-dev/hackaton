@@ -14,8 +14,8 @@ export interface ApiMovieItem {
 
 // Función para generar un poster placeholder basado en el título
 function generatePosterUrl(title: string): string {
-  const encodedTitle = encodeURIComponent(title);
-  return `https://via.placeholder.com/400x600/1a1a1a/ffffff?text=${encodedTitle}`;
+  // Usar el logo de Flow como imagen mock para todos los contenidos
+  return '/flow-logo.svg';
 }
 
 // Función para generar un ID único basado en el título
