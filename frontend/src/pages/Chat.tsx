@@ -99,6 +99,7 @@ export default function Chat() {
     setMessages(prev => [...prev, userMessage]);
     dispatch(addMessage({ id: crypto.randomUUID(), role: 'user', text: inputValue, createdAt: Date.now() }))
     setInputValue("");
+    setResultsOpen(false); // Cerrar sheet si está abierto
     dispatch(setStatus('loading'));
     
     try {
@@ -127,9 +128,12 @@ export default function Chat() {
       
       dispatch(setItems(items))
       dispatch(setStatus('succeeded'))
-      setResultsOpen(true);
+      // Solo abrir el sheet automáticamente en móvil
+      if (window.innerWidth < 768) { // md breakpoint
+        setResultsOpen(true);
+      }
     } catch (e) {
-      console.error(e)
+      console.error('Error in handleSend:', e)
       dispatch(setStatus('failed'))
     }
   };
@@ -137,7 +141,7 @@ export default function Chat() {
   const ConversationPane = () => (
     <div className="flex h-full flex-col">
       {/* Header Content */}
-      <div className="flex-1 overflow-hidden p-6 lg:p-8">
+      <div className="flex-1 overflow-y-auto p-6 lg:p-8">
         <div className="mx-auto max-w-2xl">
           {/* Main heading */}
           <div className="mb-8 text-center">
@@ -251,18 +255,25 @@ export default function Chat() {
     <div className="dark flex h-screen flex-col bg-[#0E0F12]">
       <Header showResults={status === 'succeeded' && recs.length > 0} onStartOver={handleStartOver} />
       
-      <div className="flex flex-1 overflow-hidden">
-        {/* Conversation Pane - Full width on mobile, left half on desktop */}
-        <div className="flex w-full flex-col lg:w-1/2 xl:w-3/5">
+      <div className="flex flex-1">
+        {/* Conversation Pane - Full width on mobile when no results, left half when results exist */}
+        <div className={cn(
+          "flex flex-col transition-all duration-300 overflow-hidden",
+          status === 'succeeded' && recs.length > 0 
+            ? "w-full md:w-1/2 lg:w-3/5" 
+            : "w-full"
+        )}>
           <ConversationPane />
         </div>
 
-        {/* Results Pane - Hidden on mobile, shown in sheet */}
-        <div className="hidden lg:flex lg:w-1/2 xl:w-2/5">
-          <div className="w-full border-l border-[#2A2E35]">
-            <ResultsPane />
+        {/* Results Pane - Show when there are results */}
+        {status === 'succeeded' && recs.length > 0 && (
+          <div className="hidden md:flex md:w-1/2 lg:w-2/5">
+            <div className="w-full border-l border-[#2A2E35]">
+              <ResultsPane />
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Mobile/Tablet Results Sheet - Hidden on desktop (xl breakpoint and up) */}
         <Sheet open={resultsOpen} onOpenChange={setResultsOpen}>
@@ -271,15 +282,15 @@ export default function Chat() {
               variant="outline" 
               size="sm"
               className={cn(
-                "fixed bottom-6 right-6 z-50 bg-[#5B8CFF] text-white border-[#5B8CFF] hover:bg-[#4A7AE7] xl:hidden",
+                "fixed bottom-6 right-6 z-50 bg-[#5B8CFF] text-white border-[#5B8CFF] hover:bg-[#4A7AE7] md:hidden",
                 !(status === 'succeeded' && recs.length > 0) && "hidden"
               )}
             >
               <Menu className="h-4 w-4 mr-2" />
-              Ver resultados
+              Ver resultados ({recs.length})
             </Button>
           </SheetTrigger>
-          <SheetContent side="bottom" className="h-[80vh] bg-[#0E0F12] border-[#2A2E35] xl:hidden">
+          <SheetContent side="bottom" className="h-[80vh] bg-[#0E0F12] border-[#2A2E35] md:hidden">
             <SheetTitle className="sr-only">Recomendaciones de contenido</SheetTitle>
             <SheetDescription className="sr-only">
               Resultados de recomendaciones basados en tu estado de ánimo y preferencias

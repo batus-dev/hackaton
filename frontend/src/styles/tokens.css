@@ -41,7 +41,7 @@ img, picture, video, canvas, svg {
   max-width: 100%;
 }
 
-input, button, textarea, select {
+button, textarea, select {
   font: inherit;
 }
 
@@ -145,4 +145,12 @@ p, h1, h2, h3, h4, h5, h6 {
 .min-h-screen-dynamic {
   min-height: 100vh;
   min-height: 100dvh;
+}
+
+/* Force normal text input behavior */
+input[type="text"] {
+  direction: ltr !important;
+  text-align: left !important;
+  unicode-bidi: normal !important;
+  writing-mode: horizontal-tb !important;
 }

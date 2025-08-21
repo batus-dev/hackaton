@@ -17,6 +17,19 @@ export default function ChatComposer({ onSend, isLoading }: ChatComposerProps) {
   const [inputValue, setInputValue] = useState('')
   const inputRef = useRef<HTMLInputElement>(null)
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    const cursorPosition = e.target.selectionStart;
+    setInputValue(value);
+    
+    // Restaurar la posición del cursor después del re-render
+    setTimeout(() => {
+      if (inputRef.current && cursorPosition !== null) {
+        inputRef.current.setSelectionRange(cursorPosition, cursorPosition);
+      }
+    }, 0);
+  };
+
   const handlePillClick = (text: string) => {
     setInputValue(text)
     inputRef.current?.focus()
@@ -70,10 +83,13 @@ export default function ChatComposer({ onSend, isLoading }: ChatComposerProps) {
           <input
             ref={inputRef}
             value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
+            onChange={handleInputChange}
             onKeyDown={handleKeyDown}
             placeholder="¿Para qué estás hoy?"
-            className="flex-1 px-4 py-4 bg-transparent text-text placeholder-text-dim focus:outline-none"
+            className="flex-1 px-4 py-4 bg-transparent border-none outline-none text-white text-base"
+            style={{
+              caretColor: 'white'
+            }}
             disabled={isLoading}
           />
           <button
