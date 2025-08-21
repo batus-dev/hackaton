@@ -132,22 +132,21 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
     
     console.log('Bedrock response:', JSON.stringify(result, null, 2));
 
-    // Formatear respuesta
-    const response = {
-      success: true,
-      query: query,
-      numberOfResults: resultsCount,
-      retrievalResults: result.retrievalResults || [],
-      metadata: {
-        knowledgeBaseId: KNOWLEDGE_BASE_ID,
-        timestamp: new Date().toISOString()
+    // Parsear y extraer solo el contenido de text
+    const parsedResults = (result.retrievalResults || []).map((retrievalResult: any) => {
+      try {
+        return JSON.parse(retrievalResult.content.text);
+      } catch (parseError) {
+        console.error('Error parsing JSON from retrievalResult:', parseError);
+        console.error('Content that failed to parse:', retrievalResult.content.text);
+        return null;
       }
-    };
+    }).filter((result: any) => result !== null);
 
     return {
       statusCode: 200,
       headers,
-      body: JSON.stringify(response)
+      body: JSON.stringify(parsedResults)
     };
 
   } catch (error) {
