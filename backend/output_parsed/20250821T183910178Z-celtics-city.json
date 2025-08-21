@@ -1,0 +1,17 @@
+{
+  "titulo": "Celtics City",
+  "genero": "deporte",
+  "descripcion": "Una serie documental que ofrece a los aficionados de los Boston Celtics un acceso sin precedentes al equipo. Sigue a los jugadores, entrenadores y personal detrás de las cámaras mientras navegan por la temporada de la NBA.",
+  "sinopsis": "Acceso exclusivo al equipo de baloncesto Boston Celtics durante la temporada de la NBA.",
+  "keywords": [
+    "celtics",
+    "boston celtics",
+    "nba",
+    "baloncesto",
+    "deporte",
+    "documental"
+  ],
+  "temporadas": 8,
+  "duracion_minutos": null,
+  "rating_parental": null
+}
