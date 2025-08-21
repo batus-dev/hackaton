@@ -135,3 +135,14 @@ p, h1, h2, h3, h4, h5, h6 {
 .animate-pulse {
   animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
+
+/* Composer background */
+.composer-bg {
+  background: color-mix(in oklab, var(--surface), transparent 20%);
+}
+
+/* Support for 100dvh */
+.min-h-screen-dynamic {
+  min-height: 100vh;
+  min-height: 100dvh;
+}
