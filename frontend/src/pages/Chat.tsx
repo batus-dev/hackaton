@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback, useMemo } from "react";
 import RecommendationCard from '@/components/RecommendationCard'
 import LoadingSkeleton from '@/components/LoadingSkeleton'
 import { Header } from '@/components/Header'
@@ -59,7 +59,7 @@ export default function Chat() {
     scrollToBottom();
   }, [messages]);
 
-  const handlePillClick = (pillText: string) => {
+  const handlePillClick = useCallback((pillText: string) => {
     setInputValue(pillText);
     setTimeout(() => {
       const textarea = composerRef.current?.querySelector('textarea');
@@ -68,7 +68,25 @@ export default function Chat() {
         textarea.setSelectionRange(pillText.length, pillText.length);
       }
     }, 0);
-  };
+  }, []);
+
+  // Memoizar las funciones de click para cada pill
+  const pillClickHandlers = useCallback(() => {
+    return MOOD_PILLS.reduce((handlers, pill) => {
+      handlers[pill.text] = () => handlePillClick(pill.text);
+      return handlers;
+    }, {} as Record<string, () => void>);
+  }, [handlePillClick]);
+
+  const memoizedHandlers = pillClickHandlers();
+
+  // Memoizar el estado de selección de pills
+  const pillSelectionState = useMemo(() => {
+    return MOOD_PILLS.reduce((state, pill) => {
+      state[pill.text] = selectedPills.includes(pill.text);
+      return state;
+    }, {} as Record<string, boolean>);
+  }, [selectedPills]);
 
   const handleInputChange = (value: string) => {
     setInputValue(value);
@@ -161,8 +179,8 @@ export default function Chat() {
                   key={pill.text}
                   emoji={pill.emoji}
                   text={pill.text}
-                  selected={selectedPills.includes(pill.text)}
-                  onClick={() => handlePillClick(pill.text)}
+                  selected={pillSelectionState[pill.text]}
+                  onClick={memoizedHandlers[pill.text]}
                 />
               ))}
             </div>

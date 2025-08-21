@@ -1,3 +1,4 @@
+import React from "react";
 import { X } from "lucide-react";
 import { cn } from "./ui/utils";
 
@@ -11,7 +12,7 @@ interface PillProps {
   className?: string;
 }
 
-export function Pill({ 
+export const Pill = React.memo(function Pill({ 
   emoji, 
   text, 
   selected = false, 
@@ -24,7 +25,7 @@ export function Pill({
     <button
       onClick={onClick}
       className={cn(
-        "pill-flow animate-flow-fade-in",
+        "pill-flow",
         selected && "active",
         className
       )}
@@ -47,4 +48,4 @@ export function Pill({
       )}
     </button>
   );
-}
+});
