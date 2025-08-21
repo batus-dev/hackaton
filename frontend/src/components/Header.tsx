@@ -3,16 +3,22 @@ import { RotateCcw } from "lucide-react";
 
 function Logo() {
   return (
-    <div className="h-8 w-[89px]">
+    <div className="h-8 w-[89px] animate-flow-fade-in">
       <svg className="block size-full" fill="none" preserveAspectRatio="none" viewBox="0 0 89 32">
         <g>
           <path 
             clipRule="evenodd" 
             d={svgPaths.pd330180} 
-            fill="#21DBAA" 
+            fill="url(#flowGradient)" 
             fillRule="evenodd" 
           />
         </g>
+        <defs>
+          <linearGradient id="flowGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="var(--flow-primary)" />
+            <stop offset="100%" stopColor="var(--flow-primary-dark)" />
+          </linearGradient>
+        </defs>
       </svg>
     </div>
   );
@@ -25,16 +31,16 @@ interface HeaderProps {
 
 export function Header({ showResults = false, onStartOver }: HeaderProps) {
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-[#2A2E35] bg-[#0E0F12] px-9 py-[22px]">
-      <div className="flex items-center justify-between">
+    <header className="nav-flow sticky top-0 z-50 w-full px-6 md:px-9 py-4 md:py-6">
+      <div className="flex items-center justify-between max-w-container mx-auto">
         <Logo />
         
         <div className="flex items-center">
           <button 
-            className={`flex items-center gap-2 rounded-lg border px-3 py-2 text-sm transition-colors ${
+            className={`btn-flow transition-all duration-200 ${
               showResults 
-                ? "border-[#21DBAA] text-[#21DBAA] hover:bg-[#21DBAA] hover:text-black" 
-                : "border-white/50 text-white/50 hover:border-white/70 hover:text-white/70"
+                ? "btn-flow-primary shadow-flow-brand" 
+                : "btn-flow-ghost opacity-50 cursor-not-allowed"
             }`}
             aria-label="Volver a empezar"
             onClick={onStartOver}

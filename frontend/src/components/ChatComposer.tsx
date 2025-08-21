@@ -50,32 +50,37 @@ export default function ChatComposer({ onSend, isLoading }: ChatComposerProps) {
   }
 
   return (
-    <div className="fixed left-0 right-0 bottom-0 z-50 backdrop-blur-md border-t border-border composer-bg">
-      <div className="max-w-container mx-auto px-4 py-3 pb-[calc(12px+env(safe-area-inset-bottom))]">
-        {/* Suggestion Pills */}
-        <div className="flex gap-3 overflow-x-auto pb-3 snap-x snap-mandatory scrollbar-hide">
-          {SUGGESTION_PILLS.map((pill, index) => (
-            <button
-              key={index}
-              onClick={() => handlePillClick(pill)}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  e.preventDefault()
-                  handlePillClick(pill)
-                }
-              }}
-              className="flex-shrink-0 px-3 py-2 rounded-full text-sm border bg-surface-2 border-border text-text-dim hover:bg-surface hover:border-text-dim transition-all duration-150 snap-start min-w-max"
-              role="button"
-              tabIndex={0}
-              aria-pressed="false"
-              aria-label={`Usar sugerencia: ${pill}`}
-            >
-              {pill}
-            </button>
-          ))}
+    <>
+      {/* Suggestion Pills - Always visible above input */}
+      <div className="fixed left-0 right-0 bottom-[80px] z-50 backdrop-blur-md border-t border-border composer-bg">
+        <div className="max-w-container mx-auto px-4 py-3">
+          <div className="flex gap-3 overflow-x-auto snap-x snap-mandatory scrollbar-hide">
+            {SUGGESTION_PILLS.map((pill, index) => (
+              <button
+                key={index}
+                onClick={() => handlePillClick(pill)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault()
+                    handlePillClick(pill)
+                  }
+                }}
+                className="flex-shrink-0 px-3 py-2 rounded-full text-sm border bg-surface-2 border-border text-text-dim hover:bg-surface hover:border-text-dim transition-all duration-150 snap-start min-w-max"
+                role="button"
+                tabIndex={0}
+                aria-pressed="false"
+                aria-label={`Usar sugerencia: ${pill}`}
+              >
+                {pill}
+              </button>
+            ))}
+          </div>
         </div>
+      </div>
 
-        {/* Input Container */}
+      {/* Input Container */}
+      <div className="fixed left-0 right-0 bottom-0 z-50 backdrop-blur-md border-t border-border composer-bg">
+        <div className="max-w-container mx-auto px-4 py-3 pb-[calc(12px+env(safe-area-inset-bottom))]">
         <div className="relative flex items-center bg-surface border border-border rounded-full shadow-1 overflow-hidden">
           <div className="flex items-center pl-4">
             <SparklesIcon className="text-text-dim" size={20} />
@@ -102,6 +107,6 @@ export default function ChatComposer({ onSend, isLoading }: ChatComposerProps) {
           </button>
         </div>
       </div>
-    </div>
+    </>
   )
 }

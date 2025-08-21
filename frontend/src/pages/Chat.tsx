@@ -252,7 +252,7 @@ export default function Chat() {
   );
 
   return (
-    <div className="dark flex h-screen flex-col bg-[#0E0F12]">
+    <div className="dark flex h-screen flex-col bg-[#0E0F12] pb-[160px]">
       <Header showResults={status === 'succeeded' && recs.length > 0} onStartOver={handleStartOver} />
       
       <div className="flex flex-1">

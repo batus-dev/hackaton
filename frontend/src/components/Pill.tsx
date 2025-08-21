@@ -24,24 +24,22 @@ export function Pill({
     <button
       onClick={onClick}
       className={cn(
-        "flex items-center gap-2.5 rounded-lg border px-3 py-2.5 text-sm transition-all hover:border-[#21DBAA]/70 focus:border-[#21DBAA] focus:outline-none focus:ring-2 focus:ring-[#21DBAA]/20",
-        selected 
-          ? "border-[#21DBAA] bg-[#21DBAA] text-black" 
-          : "border-[#02503a] bg-[rgba(0,0,0,0.4)] text-white",
+        "pill-flow animate-flow-fade-in",
+        selected && "active",
         className
       )}
       tabIndex={0}
       role="button"
     >
-      <span className="text-lg">{emoji}</span>
-      <span className="whitespace-nowrap">{text}</span>
+      <span className="text-base">{emoji}</span>
+      <span className="whitespace-nowrap font-medium">{text}</span>
       {removable && (
         <button
           onClick={(e) => {
             e.stopPropagation();
             onRemove?.();
           }}
-          className="ml-1 rounded-full p-0.5 hover:bg-black/20"
+          className="ml-1 rounded-full p-0.5 hover:bg-black/20 transition-colors duration-150"
           aria-label="Remover"
         >
           <X className="h-3 w-3" />
