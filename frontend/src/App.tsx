@@ -8,7 +8,7 @@ import type { RootState } from './store/store'
 export default function App() {
   const modalOpen = useAppSelector((s: RootState) => s.ui.modalContentId !== null)
   return (
-    <div className="min-h-screen bg-bg text-text">
+    <div className="dark min-h-screen bg-[#0E0F12] text-white">
       <main>
         <Routes>
           <Route path="/" element={<Chat />} />
