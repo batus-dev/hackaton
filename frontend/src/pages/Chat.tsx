@@ -52,7 +52,7 @@ export default function Chat() {
                 onSend()
               }
             }}
-            placeholder="¿Cómo quieres sentirte hoy?"
+            placeholder="Buscar contenidos o emociones (p. ej., comedia, nostalgia, acción)"
             className="flex-1 px-3 py-2 rounded bg-white/5 border border-white/10 focus:outline-none focus:ring-2 focus:ring-blue-600"
           />
           <button onClick={onSend} disabled={status==='loading'} className="px-4 py-2 rounded bg-blue-600 hover:bg-blue-500 disabled:opacity-50">Sorpréndeme</button>

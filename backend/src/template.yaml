@@ -1,0 +1,98 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: 'Sorprendeme - Bedrock Knowledge Base Retrieval API'
+
+Globals:
+  Function:
+    Timeout: 30
+    Runtime: nodejs18.x
+    Environment:
+      Variables:
+        KNOWLEDGE_BASE_ID: IKEMUOEQKP
+        KNOWLEDGE_BASE_MAX_RESULTS: 10
+
+Resources:
+  BedrockRetrievalFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: lambda/
+      Handler: dist/index.handler
+      Runtime: nodejs18.x
+      Architectures:
+        - x86_64
+      Environment:
+        Variables:
+          KNOWLEDGE_BASE_ID: IKEMUOEQKP
+          KNOWLEDGE_BASE_MAX_RESULTS: 10
+      Policies:
+        - Statement:
+          - Effect: Allow
+            Action:
+              - bedrock:Retrieve
+              - bedrock:RetrieveAndGenerate
+            Resource: 
+              - !Sub 'arn:aws:bedrock:us-west-2:${AWS::AccountId}:knowledge-base/IKEMUOEQKP'
+      Events:
+        RetrievalApi:
+          Type: Api
+          Properties:
+            RestApiId: !Ref BedrockApi
+            Path: /retrieve
+            Method: post
+            
+  BedrockApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: prod
+      Cors:
+        AllowMethods: "'GET,POST,OPTIONS'"
+        AllowHeaders: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+        AllowOrigin: "'*'"
+      DefinitionBody:
+        openapi: 3.0.1
+        info:
+          title: Bedrock Knowledge Base Retrieval API
+          version: 1.0.0
+        paths:
+          /retrieve:
+            post:
+              summary: Retrieve information from Bedrock Knowledge Base
+              requestBody:
+                required: true
+                content:
+                  application/json:
+                    schema:
+                      type: object
+                      properties:
+                        query:
+                          type: string
+                          description: The search query
+                        numberOfResults:
+                          type: integer
+                          description: Number of results to return (optional)
+                          default: 10
+                      required:
+                        - query
+              responses:
+                '200':
+                  description: Successful retrieval
+                  content:
+                    application/json:
+                      schema:
+                        type: object
+                '400':
+                  description: Bad request
+                '500':
+                  description: Internal server error
+              x-amazon-apigateway-integration:
+                type: aws_proxy
+                httpMethod: POST
+                uri: !Sub 'arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${BedrockRetrievalFunction.Arn}/invocations'
+
+Outputs:
+  BedrockRetrievalApi:
+    Description: "API Gateway endpoint URL for Bedrock retrieval function"
+    Value: !Sub "https://${BedrockApi}.execute-api.${AWS::Region}.amazonaws.com/prod/retrieve"
+  BedrockRetrievalFunction:
+    Description: "Bedrock Retrieval Lambda Function ARN"
+    Value: !GetAtt BedrockRetrievalFunction.Arn
