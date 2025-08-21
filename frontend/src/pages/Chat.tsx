@@ -252,10 +252,10 @@ export default function Chat() {
   );
 
   return (
-    <div className="dark flex h-screen flex-col bg-[#0E0F12] pb-[160px]">
+    <div className="dark flex h-screen flex-col bg-[#0E0F12]">
       <Header showResults={status === 'succeeded' && recs.length > 0} onStartOver={handleStartOver} />
       
-      <div className="flex flex-1">
+      <div className="flex flex-1 overflow-hidden">
         {/* Conversation Pane - Full width on mobile when no results, left half when results exist */}
         <div className={cn(
           "flex flex-col transition-all duration-300 overflow-hidden",
@@ -282,7 +282,7 @@ export default function Chat() {
               variant="outline" 
               size="sm"
               className={cn(
-                "fixed bottom-6 right-6 z-50 bg-[#5B8CFF] text-white border-[#5B8CFF] hover:bg-[#4A7AE7] md:hidden",
+                "fixed bottom-24 right-6 z-50 bg-[#5B8CFF] text-white border-[#5B8CFF] hover:bg-[#4A7AE7] md:hidden",
                 !(status === 'succeeded' && recs.length > 0) && "hidden"
               )}
             >
