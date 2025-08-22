@@ -36,15 +36,12 @@ export function ContentCard({
       <div className="flex gap-4">
         {/* Thumbnail */}
         <div className="relative h-[263px] w-[175px] flex-shrink-0 overflow-hidden rounded-xl">
-          {/* Imagen comentada temporalmente - no viene de la API */}
-          {/* <img 
-            src={thumbnail} 
+          <img 
+            src={thumbnail || '/flow-logo.svg'} 
             alt={title}
             className="h-full w-full object-cover"
-          /> */}
-          <div className="h-full w-full bg-[#2A2D35] flex items-center justify-center">
-            <span className="text-[#C4C4C4] text-sm">Sin imagen</span>
-          </div>
+            onError={(e) => { (e.currentTarget as HTMLImageElement).src = '/flow-logo.svg' }}
+          />
           
           {/* Play button overlay */}
           <div className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 transition-opacity group-hover:opacity-100">

@@ -22,15 +22,12 @@ export default function RecommendationCard({ item }: Props) {
       {/* Desktop Layout - Compact */}
       <div className="hidden lg:grid lg:grid-cols-[180px_1fr] gap-4 p-4">
         <div className="relative">
-          {/* Imagen comentada temporalmente - no viene de la API */}
-          {/* <img 
-            src={item.posterUrl} 
-            alt={item.title} 
-            className="w-full aspect-[2/3] object-cover rounded-md" 
-          /> */}
-          <div className="w-full aspect-[2/3] bg-surface-2 rounded-md flex items-center justify-center">
-            <span className="text-text-dim text-sm">Sin imagen</span>
-          </div>
+          <img
+            src={item.posterUrl || '/flow-logo.svg'}
+            alt={item.title}
+            className="w-full aspect-[2/3] object-cover rounded-md"
+            onError={(e) => { (e.currentTarget as HTMLImageElement).src = '/flow-logo.svg' }}
+          />
         </div>
         <div className="flex flex-col gap-2">
           <div>
@@ -85,15 +82,12 @@ export default function RecommendationCard({ item }: Props) {
       {/* Mobile/Tablet Layout */}
       <div className="lg:hidden">
         <div className="relative">
-          {/* Imagen comentada temporalmente - no viene de la API */}
-          {/* <img 
-            src={item.posterUrl} 
-            alt={item.title} 
-            className="w-full aspect-[2/3] object-cover" 
-          /> */}
-          <div className="w-full aspect-[2/3] bg-surface-2 flex items-center justify-center">
-            <span className="text-text-dim text-sm">Sin imagen</span>
-          </div>
+          <img
+            src={item.posterUrl || '/flow-logo.svg'}
+            alt={item.title}
+            className="w-full aspect-[2/3] object-cover"
+            onError={(e) => { (e.currentTarget as HTMLImageElement).src = '/flow-logo.svg' }}
+          />
         </div>
         <div className="p-4 flex flex-col gap-2">
           <div>

@@ -10,6 +10,7 @@ export interface ApiMovieItem {
   temporadas: number | null;
   duracion_minutos: number;
   rating_parental: string;
+  image?: string;
 }
 
 // Función para generar un poster placeholder basado en el título
@@ -79,7 +80,7 @@ export function adaptApiResponseToContent(apiResponse: ApiMovieItem[]): Content[
     const title = item.titulo;
     const genres = processGenres(item.genero, item.keywords || []);
     const description = item.descripcion || item.sinopsis || 'Sin descripción disponible';
-    const posterUrl = generatePosterUrl(title);
+    const posterUrl = item.image || generatePosterUrl(title);
     const parentalRating = item.rating_parental || 'PG-13';
 
     if (contentType === 'series') {
